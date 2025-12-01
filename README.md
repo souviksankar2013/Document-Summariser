@@ -51,6 +51,9 @@ streamlit run main_app.py
 
 Note: `main_app.py` is a Streamlit app — use `streamlit run` to start the UI. The app uploads a file and sends the bytes to the Bedrock model via `app_lib.get_summary`.
 
+**Live Demo**
+- Try the hosted demo: https://document-summariser.streamlit.app/
+
 **Bedrock-specific notes**
 - The code calls Bedrock's `converse` API with the model ID `us.anthropic.claude-3-7-sonnet-20250219-v1:0` as an example. Replace the `modelId` in `app_lib.py` with the model you intend to use.
 - Ensure your AWS region supports Bedrock and your IAM principal has the required permissions.
