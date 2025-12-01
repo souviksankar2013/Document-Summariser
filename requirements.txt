@@ -1,0 +1,8 @@
+streamlit
+boto3
+awscli
+
+# Optional (not used by current code but commonly needed for document parsing):
+# pdfplumber
+# python-docx
+# transformers

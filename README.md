@@ -3,19 +3,22 @@
 A small Python project that provides a basis for extracting and summarising documents. The repository contains the minimal implementation files `app_lib.py` and `main_app.py`.
 
 **Purpose:**
-- Provide a lightweight starting point for document ingestion and summarisation workflows.
+- Provide a lightweight starting point for document ingestion and summarisation workflows, using Amazon Bedrock for model inference.
+
+**Built With**
+- Amazon Bedrock (via `boto3` / Bedrock Runtime) — the summarisation call in `app_lib.py` uses Bedrock's `converse` API and a Bedrock model ID.
 
 **Contents:**
-- `app_lib.py`: Helper library functions used by the application.
-- `main_app.py`: Entry-point script / example runner.
+- `app_lib.py`: Helper library functions that call Amazon Bedrock using `boto3`.
+- `main_app.py`: Streamlit-based entry-point for uploading documents and requesting summaries.
 - `LICENSE`: Project license.
 
 **Features**
-- Minimal, easy-to-extend structure for document summarisation.
+- Minimal, easy-to-extend structure for document summarisation backed by Bedrock.
 
 **Requirements**
 - Python 3.8+ (recommended)
-- Any third-party dependencies (if used) should be listed in `requirements.txt` (not included by default).
+- See `requirements.txt` for Python package dependencies used by the code in this repository (includes `awscli` for convenience when configuring AWS credentials).
 
 **Quick Start (Windows PowerShell)**
 
@@ -26,23 +29,35 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-2. Install dependencies (if a `requirements.txt` is present):
+2. Install dependencies:
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-3. Run the application (basic example):
+3. Configure AWS credentials and region (Bedrock requires an AWS account and the correct region):
 
 ```powershell
-python main_app.py
+aws configure
 ```
 
-Note: `main_app.py` is the entry script in this repo — open it to see expected arguments or behavior. If the project has CLI options or expects file input, adapt the command accordingly (for example, `python main_app.py path\to\document.pdf`).
+Make sure the configured IAM user/role has permission to call Bedrock (e.g., `bedrock:InvokeModel` / `bedrock:Converse`).
+
+4. Run the application (basic example):
+
+```powershell
+streamlit run main_app.py
+```
+
+Note: `main_app.py` is a Streamlit app — use `streamlit run` to start the UI. The app uploads a file and sends the bytes to the Bedrock model via `app_lib.get_summary`.
+
+**Bedrock-specific notes**
+- The code calls Bedrock's `converse` API with the model ID `us.anthropic.claude-3-7-sonnet-20250219-v1:0` as an example. Replace the `modelId` in `app_lib.py` with the model you intend to use.
+- Ensure your AWS region supports Bedrock and your IAM principal has the required permissions.
 
 **Development**
 - Read `app_lib.py` and `main_app.py` to understand the current behaviour and extension points.
-- Add a `requirements.txt` file listing external packages you use (e.g., `transformers`, `sentence-transformers`, `pdfplumber`, etc.).
+- If you plan to parse PDF/DOCX contents before sending them to Bedrock (to extract text or metadata), consider adding libraries such as `pdfplumber` or `python-docx`.
 - Consider adding tests, a CI workflow, and a `pyproject.toml` or `setup.cfg` if packaging.
 
 **Contributing**
@@ -54,9 +69,9 @@ Note: `main_app.py` is the entry script in this repo — open it to see expected
 
 ---
 
-If you want, I can:
-- add a `requirements.txt` with likely dependencies,
-- update `main_app.py` to accept command-line arguments for input files,
-- or add an example `README` usage section tailored to how `main_app.py` currently works (I can inspect it and update the README accordingly).
+I updated the README to mention Amazon Bedrock and included notes about configuring AWS credentials. I can also:
+- create or refine `requirements.txt` (I will add it next),
+- update `app_lib.py` to make the Bedrock `modelId` configurable via environment variables or a settings file,
+- add example input documents and a demo script.
 
-Feel free to tell me which of the above you'd like next.
+Tell me which you'd like next.
